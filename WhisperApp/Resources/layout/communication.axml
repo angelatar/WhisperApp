@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout1">
+        <TextView
+            android:text="test"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:id="@+id/textView1" />
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout1">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/linearLayout1">
+                <TextView
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView2"
+                    android:layout_marginLeft="0.0dp" />
+                <EditText
+                    android:inputType="textMultiLine"
+                    android:layout_width="141.0dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editText1"
+                    android:layout_marginRight="0.0dp"
+                    android:hint="Your message" />
+            </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/linearLayout1">
+                <TextView
+                    android:text=""
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView3"
+                    android:layout_marginRight="0.0dp" />
+                <Button
+                    android:text="Send"
+                    android:layout_width="109.5dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/button1"
+                    android:layout_marginLeft="0.0dp" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

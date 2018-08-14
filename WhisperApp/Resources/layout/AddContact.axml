@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <EditText
+        android:inputType="textMultiLine"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchusername" />
+    <Button
+        android:text="Search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/searchbutton" />
+    <TextView
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:layout_width="match_parent"
+        android:layout_height="41.5dp"
+        android:id="@+id/userTextView"
+        android:enabled="false" />
+    <Button
+        android:text="Generate QR code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/qrgeneratorbutton"
+        android:visibility="invisible" />
+    <Button
+        android:text="Scan QR code"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/scanqrButton"
+        android:visibility="invisible" />
+</LinearLayout>

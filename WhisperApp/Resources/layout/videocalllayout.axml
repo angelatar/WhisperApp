@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px"
+    android:background="@drawable/videocall111">
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="88.5dp"
+        android:layout_height="549.0dp"
+        android:id="@+id/bee1lay"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:foregroundGravity="bottom|center"
+        android:layout_gravity="bottom|center"
+        android:gravity="center">
+        <ImageView
+            android:src="@drawable/photo_camera"
+            android:layout_width="44.0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView1"
+            android:layout_gravity="center|bottom"
+            android:foregroundGravity="center|bottom" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="88.5dp"
+        android:layout_height="549.0dp"
+        android:id="@+id/bee"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_gravity="center|bottom"
+        android:foregroundGravity="center|bottom"
+        android:gravity="center">
+        <ImageView
+            android:src="@drawable/reject11"
+            android:layout_width="44.0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView3"
+            android:foregroundGravity="center|bottom"
+            android:layout_gravity="center|bottom" />
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="88.5dp"
+        android:layout_height="549.0dp"
+        android:id="@+id/bee2lay"
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_gravity="center|bottom"
+        android:foregroundGravity="center|bottom"
+        android:gravity="center">
+        <ImageView
+            android:src="@drawable/microphone"
+            android:layout_width="44.0dp"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_gravity="center|bottom"
+            android:foregroundGravity="center|bottom" />
+    </LinearLayout>
+</LinearLayout>

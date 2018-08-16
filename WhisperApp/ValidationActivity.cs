@@ -3,7 +3,6 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Widget;
-using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -39,8 +38,8 @@ namespace WhisperApp
             button.Click += delegate {
                 if(this.CheckCode(email,enteredCode.Text))
                 {
-                    //var passwordhash = this.ComputeSha256Hash(password);
-                    if (this.AddUser(name,lastname,username, password, email))
+                    var passwordhash = this.ComputeSha256Hash(password);
+                    if (this.AddUser(name,lastname,username, passwordhash, email))
                     {
                         Intent nextActivity = new Intent(this, typeof(WelcomeActivity));
                         nextActivity.PutExtra("email", email);
@@ -83,7 +82,7 @@ namespace WhisperApp
             client.DefaultRequestHeaders.Accept.Add(
                  new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = client.GetAsync(string.Format("http://192.168.88.136:61366/api/Validation?email={0}&code={1}", email,code)).Result;
+            var response = client.GetAsync(string.Format("http://10.27.249.82:61366/api/Validation?email={0}&code={1}", email,code)).Result;
             var content = response.Content.ReadAsStringAsync().Result;
 
             return bool.Parse(content);
@@ -95,7 +94,7 @@ namespace WhisperApp
             client.DefaultRequestHeaders.Accept.Add(
                  new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = client.DeleteAsync(string.Format("http://192.168.88.136:61366/api/Validation?email={0}",email)).Result;
+            var response = client.DeleteAsync(string.Format("http://10.27.249.82:61366/api/Validation?email={0}",email)).Result;
             var content = response.Content.ReadAsStringAsync().Result;
             return bool.Parse(content);
         }
@@ -114,7 +113,7 @@ namespace WhisperApp
                 new KeyValuePair<string, string>("PasswordHash", password),
                 new KeyValuePair<string, string>("Email", email)
             });
-            var response = client.PostAsync("http://192.168.88.136:61366/api/Register", content1).Result;
+            var response = client.PostAsync("http://10.27.249.82:61366/api/Register", content1).Result;
             var content = response.Content.ReadAsStringAsync().Result;
             return bool.Parse(content.ToString());
         }

@@ -11,6 +11,8 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Java.Lang;
+using IdentityModel.Client;
+using System.Collections.Generic;
 
 namespace WhisperApp
 {
@@ -42,20 +44,39 @@ namespace WhisperApp
 
             var getRequest = new Task<string>(() =>
             {
-
-                //Console.WriteLine("Waiting for request!");
                 while (true)
                 {
-                    Thread.Sleep(1000);
+                    var identityClient = new DiscoveryClient("http://10.27.249.82:59447"); //discover the IdentityServer
+                    identityClient.Policy.RequireHttps = false;
+
+                    var identityServer = identityClient.GetAsync().Result;
+
+                    if (identityServer.IsError)
+                    {
+                        return null;
+                    }
+                    //Get the token
+                    var prefs = Application.Context.GetSharedPreferences("UserInfo", FileCreationMode.Private);
+                    var password = prefs.GetString("password", null);
+
+                    var tokenClient = new TokenClient(identityServer.TokenEndpoint, "ChatClient", "secret");
+                    var tokenResponse = tokenClient.RequestResourceOwnerPasswordAsync(username.Text, password, "CallingRequestAPI").Result;
+
+
                     var client = new HttpClient();
+                    client.SetBearerToken(tokenResponse.AccessToken);
                     client.DefaultRequestHeaders.Accept.Add(
                          new MediaTypeWithQualityHeaderValue("application/json"));
 
                     var response = client.GetAsync(string.Format("http://localhost:63653/api/CallingRequest?id={0}", 8)).Result;
                     var content = response.Content.ReadAsStringAsync().Result;
-                    //Console.WriteLine(content);
-                    if (content != "" || content != null || content != "[]")
+                    if (content != "" && content != null && content != "[]")
+                    {
+                        var response56 = client.DeleteAsync(string.Format("http://10.27.249.82:63653/api/CallingRequest?senderID={0}&receiverID={1}", 8, 1)).Result;
+                        var content56 = response56.Content.ReadAsStringAsync().Result;
+
                         return content;
+                    }
                 }
             }
 );
@@ -91,7 +112,25 @@ namespace WhisperApp
             var prefEditor = prefs.Edit();
             prefEditor.PutString("username", null);
             prefEditor.PutString("password", null);
+
             prefEditor.Commit();
+
+            var prefs1 = Application.Context.GetSharedPreferences("Contacts", FileCreationMode.Private);
+            var count = prefs.GetInt("Count", 0);
+            if (count == 0)
+                return;
+            else
+            {
+                var prefEditor1 = prefs1.Edit();
+                for (int i = 1; i <= count; i++)
+                {
+                    prefEditor1.PutString(string.Format("cont{0}", i), null);
+                    prefEditor1.PutString(string.Format("cont{0} public key", i), null);
+                    prefEditor1.PutString(string.Format("my private key with cont{0}", i), null);
+                }
+                prefEditor1.Commit();
+            }
+
         }
         protected string GetUsername()
         {

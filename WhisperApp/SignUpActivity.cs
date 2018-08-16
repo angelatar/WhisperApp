@@ -3,12 +3,9 @@ using Android.Content;
 using Android.Graphics;
 using Android.OS;
 using Android.Widget;
-using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Net.Mail;
 
 namespace WhisperApp
 {
@@ -80,7 +77,7 @@ namespace WhisperApp
                 new KeyValuePair<string, string>("email", receiver)
             });
 
-            var response = client.PostAsync("http://192.168.88.136:61366/api/Validation", paramContent).Result;
+            var response = client.PostAsync("http://10.27.249.82:61366/api/Validation", paramContent).Result;
             var content = response.Content.ReadAsStringAsync().Result;
             return bool.Parse(content);
         }

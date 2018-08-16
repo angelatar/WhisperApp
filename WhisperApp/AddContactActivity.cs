@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Security.Cryptography;
@@ -8,9 +7,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
-using Android.Graphics;
 using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using IdentityModel.Client;
@@ -34,6 +31,8 @@ namespace WhisperApp
             var contactNameTextView = FindViewById<TextView>(Resource.Id.userTextView);
             var QRGeneratorButton = FindViewById<Button>(Resource.Id.qrgeneratorbutton);
             var scanQR = FindViewById<Button>(Resource.Id.scanqrButton);
+            var enterpublickey = FindViewById<Button>(Resource.Id.enterpublickeyButton);
+            Dictionary<string, string> keys = null;
 
             searchButton.Click += delegate
              {
@@ -44,6 +43,8 @@ namespace WhisperApp
                      {
                          QRGeneratorButton.Visibility = ViewStates.Visible;
                          scanQR.Visibility = ViewStates.Visible;
+                         enterpublickey.Visibility = ViewStates.Visible;
+                         keys = KeyGenerator();
                      };
                      contactNameTextView.Text = contactName.Text;
                  }
@@ -51,17 +52,23 @@ namespace WhisperApp
 
             QRGeneratorButton.Click += delegate
             {
-                var keys = KeyGenerator();
-                var qrtext = string.Format("Username : {0} , key : {1}", contactNameTextView.Text, keys["publicKey"]);
+                var qrtext = keys["publicKey"];
                 Intent nextActivity = new Intent(this, typeof(QRCodeActivity));
                 nextActivity.PutExtra("qrtext", qrtext);
                 StartActivity(nextActivity);
-
             };
 
             scanQR.Click += delegate
             {
                 Intent nextActivity = new Intent(this, typeof(QRCodeScannerActivity));
+                StartActivity(nextActivity);
+            };
+
+            enterpublickey.Click += delegate
+            {
+                Intent nextActivity = new Intent(this, typeof(EnterPublicKeyActivity));
+                nextActivity.PutExtra("username", contactNameTextView.Text);
+                nextActivity.PutExtra("myPrivateKey", keys["privateKey"]);
                 StartActivity(nextActivity);
             };
         }
@@ -82,7 +89,7 @@ namespace WhisperApp
 
         private static string FindUser(string usn, string pass, string contactusername)
         {
-            var discoveryClient = new DiscoveryClient("http://192.168.88.136:59447"); //discover the IdentityServer
+            var discoveryClient = new DiscoveryClient("http://10.27.249.82:59447"); //discover the IdentityServer
             discoveryClient.Policy.RequireHttps = false;
 
             var identityServer = discoveryClient.GetAsync().Result;
@@ -106,22 +113,11 @@ namespace WhisperApp
             client.DefaultRequestHeaders.Accept.Add(
                  new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = client.GetAsync("http://192.168.88.136:61366/api/users/" + contactusername).Result;
+            var response = client.GetAsync("http://10.27.249.82:61366/api/users/" + contactusername).Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var bee = JsonConvert.DeserializeObject(content);
             return bee.ToString();
 
-        }
-
-        public Bitmap GenerateQR(string text)
-        {
-            var bw = new ZXing.BarcodeWriter();
-            var encOptions = new ZXing.Common.EncodingOptions() { Width = 400, Height = 400, Margin = 0 };
-            bw.Options = encOptions;
-            bw.Format = ZXing.BarcodeFormat.QR_CODE;
-            var result = Bitmap.CreateBitmap(bw.Write(text));
-
-            return result;
         }
 
         public Dictionary<string, string> KeyGenerator()

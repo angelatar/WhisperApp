@@ -4,10 +4,10 @@ using Android.OS;
 using IdentityModel.Client;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using Newtonsoft.Json.Linq;
 using Android.Content;
-using System;
 using Newtonsoft.Json;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace WhisperApp
 {
@@ -40,10 +40,11 @@ namespace WhisperApp
             {
                 if (username.Text != "" && password.Text != "")
                 {
-                    var userInfo = CheckUser(username.Text, password.Text);
+                    var passwordhash = this.ComputeSha256Hash(password.Text);
+                    var userInfo = CheckUser(username.Text, passwordhash);
                     if (userInfo != null)
                     {
-                        saveset(username.Text, password.Text);
+                        saveset(username.Text, passwordhash);
                         Intent nextActivity = new Intent(this, typeof(WelcomeActivity));
                         nextActivity.PutExtra("Username", userInfo);
                         StartActivity(nextActivity);
@@ -69,7 +70,7 @@ namespace WhisperApp
 
         private static string CheckUser(string usn, string pass)
         {
-            var discoveryClient = new DiscoveryClient("http://192.168.88.136:59447"); //discover the IdentityServer
+            var discoveryClient = new DiscoveryClient("http://10.27.249.82:59447"); //discover the IdentityServer
             discoveryClient.Policy.RequireHttps = false;
 
             var identityServer = discoveryClient.GetAsync().Result;
@@ -93,13 +94,31 @@ namespace WhisperApp
             client.DefaultRequestHeaders.Accept.Add(
                  new MediaTypeWithQualityHeaderValue("application/json"));
 
-            var response = client.GetAsync("http://192.168.88.136:61366/api/users/"+username).Result;
+            var response = client.GetAsync("http://10.27.249.82:61366/api/users/"+username).Result;
             var content = response.Content.ReadAsStringAsync().Result;
             var bee = JsonConvert.DeserializeObject(content);
             if (bee == null)
                 return null;
             return bee.ToString();
 
+        }
+
+        private string ComputeSha256Hash(string rawData)
+        {
+            // Create a SHA256   
+            using (SHA256 sha256Hash = SHA256.Create())
+            {
+                // ComputeHash - returns byte array  
+                byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(rawData));
+
+                // Convert byte array to a string   
+                StringBuilder builder = new StringBuilder();
+                for (int i = 0; i < bytes.Length; i++)
+                {
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                return builder.ToString();
+            }
         }
     }
 }

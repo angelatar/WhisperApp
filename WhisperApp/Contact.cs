@@ -1,20 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-using Android.App;
-using Android.Content;
-using Android.OS;
-using Android.Runtime;
-using Android.Views;
-using Android.Widget;
-
-namespace WhisperApp
+﻿namespace WhisperApp
 {
     public class Contact
     {
         public string Username { set; get; }
+
+        public string PublicKey { set; get; }
+
+        public string MyPrivateKey { set; get; }
 
     }
 }

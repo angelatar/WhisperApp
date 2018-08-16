@@ -31,4 +31,10 @@
         android:layout_height="wrap_content"
         android:id="@+id/scanqrButton"
         android:visibility="invisible" />
+    <Button
+        android:text="Enter public key"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/enterpublickeyButton"
+        android:visibility="invisible" />
 </LinearLayout>
